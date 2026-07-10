@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+
+    - name: Smoke test src/ imports
+      run: |
+        python -c "
+        from src import (
+            generate_synthetic_ecommerce,
+            cosine_similarity_matrix, jaccard_similarity_matrix,
+            ContentBasedRecommender, UserCFRecommender, ItemCFRecommender,
+            SVDRecommender, NMFRecommender,
+            precision_at_k, recall_at_k, ndcg_at_k,
+        )
+        print('✓ All src/ imports succeeded')
+        "
+
+    - name: Quick data + model smoke test
+      run: |
+        python -c "
+        from src import generate_synthetic_ecommerce, ContentBasedRecommender, SVDRecommender
+        from src.utils import set_seeds
+        set_seeds(42)
+        data = generate_synthetic_ecommerce(n_products=50, n_users=20, n_interactions=300)
+        cb = ContentBasedRecommender().fit(data.interactions, products=data.products)
+        recs = cb.recommend(data.users['user_id'].iloc[0], top_k=5)
+        assert len(recs) == 5, f'Expected 5 recs, got {len(recs)}'
+        print('✓ Content-Based smoke test passed')
+        svd = SVDRecommender(n_factors=10).fit(data.interactions)
+        recs = svd.recommend(data.users['user_id'].iloc[0], top_k=5)
+        assert len(recs) == 5
+        print('✓ SVD smoke test passed')
+        "
