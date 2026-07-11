@@ -1,0 +1,8 @@
+Model,Coverage,Novelty,Diversity
+Content-Based,0.404,9.7237,0.29
+User-CF,0.264,7.5054,0.8115
+Item-CF,0.276,11.8225,0.8533
+SVD,0.412,8.1474,0.8022
+NMF,0.328,7.9254,0.6806
+Neural-CF,0.028,9.5622,0.8594
+Hybrid,0.172,9.336,0.8525
