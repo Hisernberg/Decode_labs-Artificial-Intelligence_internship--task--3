@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+# Keep executed notebook for reference but allow ignoring in dev
+# AI_Recommendation_Logic_executed.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Data caches
+data/online_retail.xlsx
+data/*.parquet
+data/*.h5
+*.cache
+
+# PyTorch model caches
+*.pt
+*.pth
+*.ckpt
+
+# OS / editor
+.DS_Store
+*.bak
+
+# Logs
+*.log
+logs/
+
+# Colab
+.config/
+sample_data/
